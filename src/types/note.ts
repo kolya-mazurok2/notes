@@ -8,3 +8,7 @@ export interface Note {
 export interface NoteListItemProps {
   note: Note;
 }
+
+export interface NoteEditFormProps {
+  note: Note;
+}
