@@ -62,6 +62,7 @@ const NoteEditForm = (props: NoteEditFormProps) => {
           rows={6}
           variant="outlined"
           onChange={descriptionChangeHandler}
+          value={description}
         />
       </FormControl>
 

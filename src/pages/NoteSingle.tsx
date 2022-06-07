@@ -4,6 +4,9 @@ import NoteEditForm from '../components/note/NoteEditForm';
 import { find } from '../api/notes';
 import { useEffect, useState } from 'react';
 import { Note } from '../types/note';
+import { Button } from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import * as ROUTES from '../constants/routes';
 
 const NoteSingle = () => {
   const { id } = useParams();
@@ -30,7 +33,14 @@ const NoteSingle = () => {
   return (
     <div className="page page--note-single">
       <section>
-        <Container>{markup}</Container>
+        <Container>
+          <Button href={ROUTES.HOME}>
+            <ArrowBackIcon />
+            Back
+          </Button>
+
+          {markup}
+        </Container>
       </section>
     </div>
   );
