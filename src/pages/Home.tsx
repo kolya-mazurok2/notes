@@ -1,5 +1,5 @@
 import { Container } from '@mui/system';
-import NoteList from '../components/note/NoteList';
+import NoteFeed from '../components/note/NoteFeed';
 
 const Home = () => {
   return (
@@ -8,7 +8,7 @@ const Home = () => {
         <Container>
           <h1>My notes</h1>
 
-          <NoteList />
+          <NoteFeed />
         </Container>
       </section>
     </div>
