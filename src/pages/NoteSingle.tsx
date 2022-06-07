@@ -1,25 +1,36 @@
 import { Container } from '@mui/system';
 import { useParams, Navigate } from 'react-router-dom';
-import { notes } from '../data/notes';
 import NoteEditForm from '../components/note/NoteEditForm';
+import { find } from '../api/notes';
+import { useEffect, useState } from 'react';
+import { Note } from '../types/note';
 
 const NoteSingle = () => {
   const { id } = useParams();
+  const [isLoading, setIsLoading] = useState(true);
+  const [note, setNote] = useState<Note | null>();
 
-  const [note] = notes.filter((note) => {
-    return note.id === id;
-  });
+  useEffect(() => {
+    const getNote = async (id: string | undefined) => {
+      await find(id).then((note) => {
+        setNote(note);
+        setIsLoading(false);
+      });
+    };
 
-  if (!note) {
+    getNote(id);
+  }, []);
+
+  if (!note && !isLoading) {
     return <Navigate to="/" />;
   }
+
+  const markup = note ? <NoteEditForm note={note} /> : '';
 
   return (
     <div className="page page--note-single">
       <section>
-        <Container>
-          <NoteEditForm note={note} />
-        </Container>
+        <Container>{markup}</Container>
       </section>
     </div>
   );
