@@ -1,4 +1,4 @@
-import { Grid } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import NoteListItem from './NoteListItem';
 import * as NOTES_API from '../../api/notes';
 import { useEffect, useState } from 'react';
@@ -23,6 +23,12 @@ const NoteList = (props: NoteListProps) => {
 
   return (
     <Grid container spacing={3}>
+      {!notes.length && (
+        <Grid item xs={12}>
+          <Typography variant="h6">No notes have been added yet!</Typography>
+        </Grid>
+      )}
+
       {notes.map((note) => {
         return (
           <Grid key={note.id} item xs={4}>
