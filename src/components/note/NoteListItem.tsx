@@ -1,6 +1,5 @@
 import { Card, CardContent, CardHeader, Typography, CardActions, Button } from '@mui/material';
 import { NoteListItemProps } from '../../types/note';
-import { NOTES as NOUTES_ROUTE } from '../../constants/routes';
 
 const NoteListItem = (props: NoteListItemProps) => {
   const { note, itemDeleteCallback } = props;
@@ -21,7 +20,7 @@ const NoteListItem = (props: NoteListItemProps) => {
         </Typography>
 
         <CardActions>
-          <Button size="small" color="primary" href={NOUTES_ROUTE + `/${note.id}`}>
+          <Button size="small" color="primary" href={'/notes' + `/${note.id}`}>
             Edit
           </Button>
 

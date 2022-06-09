@@ -4,7 +4,6 @@ import React, { FormEvent, useState } from 'react';
 import { NoteEditFormProps } from '../../types/note';
 import { update } from '../../api/notes';
 import { useNavigate } from 'react-router-dom';
-import * as ROUTES from '../../constants/routes';
 
 const NoteEditForm = (props: NoteEditFormProps) => {
   const { note } = props;
@@ -23,7 +22,7 @@ const NoteEditForm = (props: NoteEditFormProps) => {
     }
 
     update({ ...note, title, description }).then(() => {
-      navigate(ROUTES.HOME, { replace: true });
+      navigate('/', { replace: true });
     });
   };
 
