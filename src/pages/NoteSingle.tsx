@@ -6,7 +6,6 @@ import { useEffect, useState } from 'react';
 import { Note } from '../types/note';
 import { Button } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import * as ROUTES from '../constants/routes';
 
 const NoteSingle = () => {
   const { id } = useParams();
@@ -34,7 +33,7 @@ const NoteSingle = () => {
     <div className="page page--note-single">
       <section>
         <Container>
-          <Button href={ROUTES.HOME}>
+          <Button href="/">
             <ArrowBackIcon />
             Back
           </Button>
