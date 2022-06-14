@@ -1,7 +1,7 @@
 import { Container } from '@mui/system';
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import NoteCreateForm from '../components/note/NoteCreateForm';
+import NewNote from '../components/note/NewNote';
 import NoteList from '../components/note/NoteList';
 import { createNote, findAllNotes, removeNote } from '../repositories/note';
 import { Note, NoteCreate } from '../types/note';
@@ -53,7 +53,7 @@ const Home = () => {
             <NoteList notes={notes} onNoteEdit={handleNoteEdit} onNoteDelete={handleNoteDelete} />
           )}
 
-          <NoteCreateForm onNoteCreate={handleNoteCreate} />
+          <NewNote onNoteCreate={handleNoteCreate} />
         </Container>
       </section>
     </div>
