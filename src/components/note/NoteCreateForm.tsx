@@ -4,16 +4,17 @@ import ClearIcon from '@mui/icons-material/Clear';
 import React, { FormEvent, useState } from 'react';
 import { Button, FormControl, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import { create } from '../../api/notes';
-import { NoteCreateFormProps } from '../../types/note';
+import { NoteCreate } from '../../types/note';
 
-const NoteCreateForm = (props: NoteCreateFormProps) => {
+interface INoteCreateFormProps {
+  onNoteCreate: (note: NoteCreate) => void;
+}
+
+const NoteCreateForm = ({ onNoteCreate }: INoteCreateFormProps) => {
   const [showForm, setShowForm] = useState(false);
   const [title, setTitle] = useState('');
   const [titleIsValid, setTitleIsValid] = useState(false);
   const [description, setDescription] = useState('');
-
-  const { noteCreatedCallback } = props;
 
   const toggleShowFormClickHandler = () => {
     setShowForm(!showForm);
@@ -26,12 +27,10 @@ const NoteCreateForm = (props: NoteCreateFormProps) => {
       return;
     }
 
-    create({
+    onNoteCreate({
       title,
       description,
       createdAt: new Date()
-    }).then(() => {
-      noteCreatedCallback();
     });
   };
 

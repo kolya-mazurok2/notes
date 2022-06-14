@@ -1,6 +1,6 @@
 import React from 'react';
 import Home from '../pages/Home';
-import NoteSingle from '../pages/NoteSingle';
+import NoteSingle from '../pages/notes/NoteSingle';
 
 interface IAppRoutes {
   path: string;

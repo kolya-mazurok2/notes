@@ -1,18 +1,17 @@
 import { Button, FormControl, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { FormEvent, useState } from 'react';
-import { NoteEditFormProps } from '../../types/note';
-import { update } from '../../api/notes';
-import { useNavigate } from 'react-router-dom';
+import { Note } from '../../types/note';
 
-const NoteEditForm = (props: NoteEditFormProps) => {
-  const { note } = props;
+interface NoteEditFormProps {
+  note: Note;
+  onNoteEdit(note: Note): void;
+}
 
+const NoteEditForm = ({ note, onNoteEdit }: NoteEditFormProps) => {
   const [title, setTitle] = useState(note.title);
   const [titleIsValid, setTitleIsValid] = useState(true);
   const [description, setDescription] = useState(note.description);
-
-  const navigate = useNavigate();
 
   const formSubmitHandler = (event: FormEvent) => {
     event.preventDefault();
@@ -21,8 +20,10 @@ const NoteEditForm = (props: NoteEditFormProps) => {
       return;
     }
 
-    update({ ...note, title, description }).then(() => {
-      navigate('/', { replace: true });
+    onNoteEdit({
+      ...note,
+      title,
+      description
     });
   };
 
