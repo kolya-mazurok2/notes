@@ -1,25 +1,21 @@
 import { Grid, Typography } from '@mui/material';
+import { Note } from '../../types/note';
 import NoteListItem from './NoteListItem';
-import * as NOTES_API from '../../api/notes';
-import { useEffect, useState } from 'react';
-import { Note, NoteListProps } from '../../types/note';
 
-const NoteList = (props: NoteListProps) => {
-  const [notes, setNotes] = useState<Note[]>(props.notes);
+interface NoteListProps {
+  notes: Array<Note>;
+  onNoteEdit(id: string): void;
+  onNoteDelete(id: string): void;
+}
 
-  const deleteNote = (id: string) => {
-    NOTES_API.remove(id).then(() => {
-      setNotes(
-        notes.filter((note) => {
-          return note.id !== id;
-        })
-      );
-    });
+const NoteList = ({ notes, onNoteEdit, onNoteDelete }: NoteListProps) => {
+  const handleNoteItemEdit = (id: string) => {
+    onNoteEdit(id);
   };
 
-  useEffect(() => {
-    setNotes(props.notes);
-  }, [props.notes]);
+  const handleNoteItemDelete = (id: string) => {
+    onNoteDelete(id);
+  };
 
   return (
     <Grid container spacing={3}>
@@ -32,7 +28,11 @@ const NoteList = (props: NoteListProps) => {
       {notes.map((note) => {
         return (
           <Grid key={note.id} item xs={4}>
-            <NoteListItem note={note} itemDeleteCallback={deleteNote} />
+            <NoteListItem
+              note={note}
+              onNoteItemEdit={handleNoteItemEdit}
+              onNoteItemDelete={handleNoteItemDelete}
+            />
           </Grid>
         );
       })}
