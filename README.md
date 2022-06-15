@@ -1,3 +1,7 @@
+## App Info
+
+### App URL: https://notes-3990d.web.app/
+
 ## Available Scripts
 
 In the project directory, you can run:
