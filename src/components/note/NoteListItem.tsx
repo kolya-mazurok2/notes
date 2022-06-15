@@ -1,4 +1,5 @@
 import { Card, CardContent, CardHeader, Typography, CardActions, Button } from '@mui/material';
+import { dateFormatDefault } from '../../helpers/date';
 import { Note } from '../../types/note';
 
 interface INoteListItemProps {
@@ -16,7 +17,7 @@ const NoteListItem = ({ note, onNoteItemEdit, onNoteItemDelete }: INoteListItemP
         {note.description && <Typography variant="body2">{note.description}</Typography>}
 
         <Typography variant="subtitle2" align="right">
-          {note.createdAt.toLocaleDateString()}
+          {dateFormatDefault(note.createdAt)}
         </Typography>
 
         <CardActions>

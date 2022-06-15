@@ -1,3 +1,4 @@
+import { secondsToDate } from '../helpers/date';
 import {
   createNoteDoc,
   findAllNoteDocs,
@@ -18,7 +19,7 @@ const findAllNotes = async (): Promise<Array<Note>> => {
       id: doc.id,
       title: docProps.title,
       description: docProps.description,
-      createdAt: new Date(docProps.createdAt.seconds * 1000)
+      createdAt: secondsToDate(docProps.createdAt.seconds)
     });
   });
 
@@ -38,7 +39,7 @@ const findNote = async (id: string): Promise<Note | null> => {
     id: doc.id,
     title: docProps.title,
     description: docProps.description,
-    createdAt: new Date(docProps.createdAt.seconds * 1000)
+    createdAt: secondsToDate(docProps.createdAt.seconds)
   };
 };
 
