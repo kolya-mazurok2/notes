@@ -27,7 +27,7 @@ const NoteList = ({ notes, onNoteEdit, onNoteDelete }: NoteListProps) => {
 
       {notes.map((note) => {
         return (
-          <Grid key={note.id} item xs={4}>
+          <Grid key={note.id} item xs={12} sm={6} md={4}>
             <NoteListItem
               note={note}
               onNoteItemEdit={handleNoteItemEdit}
