@@ -4,8 +4,8 @@ import { Note } from '../../types/note';
 
 interface INoteListItemProps {
   note: Note;
-  onNoteItemEdit(id: string): void;
-  onNoteItemDelete(id: string): void;
+  onNoteItemEdit?: (id: string) => void;
+  onNoteItemDelete?: (id: string) => void;
 }
 
 const NoteListItem = ({ note, onNoteItemEdit, onNoteItemDelete }: INoteListItemProps) => {
@@ -20,25 +20,27 @@ const NoteListItem = ({ note, onNoteItemEdit, onNoteItemDelete }: INoteListItemP
           {dateFormatDefault(note.createdAt)}
         </Typography>
 
-        <CardActions>
-          <Button
-            size="small"
-            color="primary"
-            onClick={() => {
-              onNoteItemEdit(note.id);
-            }}>
-            Edit
-          </Button>
+        {onNoteItemEdit && onNoteItemDelete && (
+          <CardActions>
+            <Button
+              size="small"
+              color="primary"
+              onClick={() => {
+                onNoteItemEdit(note.id);
+              }}>
+              Edit
+            </Button>
 
-          <Button
-            size="small"
-            color="error"
-            onClick={() => {
-              onNoteItemDelete(note.id);
-            }}>
-            Delete
-          </Button>
-        </CardActions>
+            <Button
+              size="small"
+              color="error"
+              onClick={() => {
+                onNoteItemDelete(note.id);
+              }}>
+              Delete
+            </Button>
+          </CardActions>
+        )}
       </CardContent>
     </Card>
   );

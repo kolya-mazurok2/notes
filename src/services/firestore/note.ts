@@ -5,8 +5,10 @@ import {
   doc,
   getDoc,
   getDocs,
+  orderBy,
   query,
-  updateDoc
+  updateDoc,
+  where
 } from 'firebase/firestore';
 import { Note, NoteCreate } from '../../types/note';
 import { db } from './config';
@@ -16,7 +18,13 @@ const PATH = 'notes';
 const findAllNoteDocs = () => {
   const ref = collection(db, PATH);
 
-  return getDocs(query(ref));
+  return getDocs(query(ref, orderBy('createdAt', 'desc')));
+};
+
+const findAllFeaturedNoteDocs = () => {
+  const ref = collection(db, PATH);
+
+  return getDocs(query(ref, where('isFeatured', '==', true), orderBy('createdAt', 'desc')));
 };
 
 const findNoteDoc = (id: string) => {
@@ -40,10 +48,14 @@ const createNoteDoc = (note: NoteCreate) => {
 const updateNoteDoc = (note: Note) => {
   const ref = doc(db, 'notes', note.id);
 
-  return updateDoc(ref, {
-    title: note.title,
-    description: note.description
-  });
+  return updateDoc(ref, { ...note });
 };
 
-export { findAllNoteDocs, findNoteDoc, removeNoteDoc, createNoteDoc, updateNoteDoc };
+export {
+  findAllNoteDocs,
+  findNoteDoc,
+  removeNoteDoc,
+  createNoteDoc,
+  updateNoteDoc,
+  findAllFeaturedNoteDocs
+};

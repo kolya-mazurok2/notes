@@ -4,21 +4,25 @@ import NoteListItem from './NoteListItem';
 
 interface NoteListProps {
   notes: Array<Note>;
-  onNoteEdit(id: string): void;
-  onNoteDelete(id: string): void;
+  onNoteEdit?: (id: string) => void;
+  onNoteDelete?: (id: string) => void;
 }
 
 const NoteList = ({ notes, onNoteEdit, onNoteDelete }: NoteListProps) => {
   const handleNoteItemEdit = (id: string) => {
-    onNoteEdit(id);
+    if (onNoteEdit) {
+      onNoteEdit(id);
+    }
   };
 
   const handleNoteItemDelete = (id: string) => {
-    onNoteDelete(id);
+    if (onNoteDelete) {
+      onNoteDelete(id);
+    }
   };
 
   return (
-    <Grid container spacing={3}>
+    <Grid container spacing={3} className="note-list">
       {!notes.length && (
         <Grid item xs={12}>
           <Typography variant="h6">No notes have been added yet!</Typography>
@@ -27,12 +31,22 @@ const NoteList = ({ notes, onNoteEdit, onNoteDelete }: NoteListProps) => {
 
       {notes.map((note) => {
         return (
-          <Grid key={note.id} item xs={12} sm={6} md={4}>
-            <NoteListItem
-              note={note}
-              onNoteItemEdit={handleNoteItemEdit}
-              onNoteItemDelete={handleNoteItemDelete}
-            />
+          <Grid
+            key={note.id}
+            item
+            xs={12}
+            sm={6}
+            md={4}
+            className={`note-list--item${note.isFeatured ? ' featured' : ''}`}>
+            {onNoteEdit && onNoteDelete ? (
+              <NoteListItem
+                note={note}
+                onNoteItemEdit={handleNoteItemEdit}
+                onNoteItemDelete={handleNoteItemDelete}
+              />
+            ) : (
+              <NoteListItem note={note} />
+            )}
           </Grid>
         );
       })}
