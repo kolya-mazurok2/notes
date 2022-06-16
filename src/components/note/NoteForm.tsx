@@ -1,4 +1,11 @@
-import { Button, FormControl, TextField, Typography } from '@mui/material';
+import {
+  Button,
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  TextField,
+  Typography
+} from '@mui/material';
 import { Box } from '@mui/system';
 import { FormEvent, useEffect, useState } from 'react';
 import { Note, NoteCreate } from '../../types/note';
@@ -18,6 +25,7 @@ interface NoteFormProps {
 interface NoteFormFields {
   title: string;
   description: string;
+  isFeatured: boolean;
 }
 
 interface NoteFormFieldsValidity {
@@ -26,7 +34,8 @@ interface NoteFormFieldsValidity {
 
 const DEFAULT_NOTE_FORM_FIELDS: NoteFormFields = {
   title: '',
-  description: ''
+  description: '',
+  isFeatured: false
 };
 
 const NOTE_FORM_FIELDS_VALIDITY_VALID: NoteFormFieldsValidity = {
@@ -82,13 +91,18 @@ const NoteForm = ({ formType, note, onNoteCreate, onNoteEdit }: NoteFormProps) =
     setFormFields({ ...formFields, description: value });
   };
 
+  const featuredChangeHandler = (value: boolean) => {
+    setFormFields({ ...formFields, isFeatured: value });
+  };
+
   useEffect(() => {
     if (formType === NoteFormType.Edit && note) {
       setIsEdit(true);
 
       setFormFields({
         title: note.title,
-        description: note.description
+        description: note.description,
+        isFeatured: note.isFeatured
       });
 
       setFormFieldsValidity(NOTE_FORM_FIELDS_VALIDITY_VALID);
@@ -125,6 +139,19 @@ const NoteForm = ({ formType, note, onNoteCreate, onNoteEdit }: NoteFormProps) =
           }}
         />
       </FormControl>
+
+      <FormControl margin="normal">
+        <FormControlLabel
+          control={<Checkbox defaultChecked={note && note.isFeatured ? true : false} />}
+          label="Featured"
+          onChange={(event) => {
+            const target = event.target as HTMLInputElement;
+            featuredChangeHandler(target.checked);
+          }}
+        />
+      </FormControl>
+
+      <br />
 
       <FormControl margin="normal">
         <Button variant="contained" type="submit">

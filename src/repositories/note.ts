@@ -1,29 +1,46 @@
+import { DocumentData, QueryDocumentSnapshot, QuerySnapshot } from 'firebase/firestore';
 import { secondsToDate } from '../helpers/date';
 import {
   createNoteDoc,
+  findAllFeaturedNoteDocs,
   findAllNoteDocs,
   findNoteDoc,
   removeNoteDoc,
   updateNoteDoc
 } from '../services/firestore/note';
-import { Note, NoteCreate } from '../types/note';
+import { Note, NoteCreate, NOTE_DEFAULT } from '../types/note';
 
-const findAllNotes = async (): Promise<Array<Note>> => {
+const generateNoteFromDoc = (doc: QueryDocumentSnapshot<DocumentData>): Note => {
+  const docProps = doc.data();
+
+  return {
+    ...NOTE_DEFAULT,
+    ...docProps,
+    id: doc.id,
+    createdAt: secondsToDate(docProps.createdAt.seconds)
+  };
+};
+
+const generateNotesFromDocs = (docs: QuerySnapshot<DocumentData>): Array<Note> => {
   const notes: Array<Note> = [];
-  const docs = await findAllNoteDocs();
 
   docs.forEach((doc) => {
-    let docProps = doc.data();
-
-    notes.push({
-      id: doc.id,
-      title: docProps.title,
-      description: docProps.description,
-      createdAt: secondsToDate(docProps.createdAt.seconds)
-    });
+    notes.push(generateNoteFromDoc(doc));
   });
 
   return notes;
+};
+
+const findAllNotes = async (): Promise<Array<Note>> => {
+  const docs = await findAllNoteDocs();
+
+  return generateNotesFromDocs(docs);
+};
+
+const findAllFeaturedNotes = async (): Promise<Array<Note>> => {
+  const docs = await findAllFeaturedNoteDocs();
+
+  return generateNotesFromDocs(docs);
 };
 
 const findNote = async (id: string): Promise<Note | null> => {
@@ -33,14 +50,7 @@ const findNote = async (id: string): Promise<Note | null> => {
     return null;
   }
 
-  const docProps = doc.data();
-
-  return {
-    id: doc.id,
-    title: docProps.title,
-    description: docProps.description,
-    createdAt: secondsToDate(docProps.createdAt.seconds)
-  };
+  return generateNoteFromDoc(doc);
 };
 
 const removeNote = (id: string) => {
@@ -55,4 +65,4 @@ const updateNote = (note: Note) => {
   return updateNoteDoc(note);
 };
 
-export { findAllNotes, findNote, removeNote, createNote, updateNote };
+export { findAllNotes, findNote, removeNote, createNote, updateNote, findAllFeaturedNotes };
