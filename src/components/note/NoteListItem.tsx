@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, Typography, CardActions, Button } from '@mui/material';
+import { Card, CardContent, Typography, CardActions, Button } from '@mui/material';
 import { dateFormatDefault } from '../../helpers/date';
 import { Note } from '../../types/note';
 
@@ -12,7 +12,7 @@ const NoteListItem = ({ note, onNoteItemEdit, onNoteItemDelete }: INoteListItemP
   return (
     <Card variant="outlined">
       <CardContent>
-        <CardHeader title={note.title} />
+        <Typography variant="h6">{note.title}</Typography>
 
         {note.description && <Typography variant="body2">{note.description}</Typography>}
 

@@ -9,8 +9,3 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
-
-.note-list--item.featured > div {
-  border-width: 2px;
-  border-color: #1976d2;
-}
