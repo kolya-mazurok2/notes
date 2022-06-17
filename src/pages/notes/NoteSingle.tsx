@@ -2,8 +2,6 @@ import { Container } from '@mui/system';
 import { useParams, Navigate, useNavigate } from 'react-router-dom';
 import { useCallback, useEffect, useState } from 'react';
 import { Note } from '../../types/note';
-import { Button } from '@mui/material';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { findNote, updateNote } from '../../repositories/note';
 import NoteForm from '../../components/note/NoteForm';
 import { NoteFormType } from '../../components/note/NoteForm';
@@ -51,11 +49,6 @@ const NoteSingle = () => {
       {note && (
         <section>
           <Container>
-            <Button href="/">
-              <ArrowBackIcon />
-              Back
-            </Button>
-
             <NoteForm formType={NoteFormType.Edit} note={note} onNoteEdit={handleNoteEdit} />
           </Container>
         </section>

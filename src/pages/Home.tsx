@@ -1,3 +1,4 @@
+import { LinearProgress } from '@mui/material';
 import { Container } from '@mui/system';
 import { useCallback, useEffect, useState } from 'react';
 import NoteList from '../components/note/NoteList';
@@ -21,6 +22,8 @@ const Home = () => {
 
   return (
     <div className="page page--home">
+      {isLoading && <LinearProgress />}
+
       <section>
         <Container>
           <h1>Featured notes</h1>

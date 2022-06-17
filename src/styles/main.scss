@@ -1,0 +1,32 @@
+@import './colors.scss';
+
+.header {
+  &--main {
+    border-bottom: 1px solid $grey;
+  }
+
+  a {
+    text-decoration: none;
+  }
+}
+
+.main-menu {
+  padding: 20px 0;
+  
+  &--item {
+    padding: 8px 12px;
+  }
+}
+
+.note-list {
+  &--item {
+    .MuiTypography-body2,
+    .MuiTypography-subtitle2 {
+      margin-top: 20px;
+    }
+
+    &.featured > div {
+      border-top: 4px solid $gold;
+    }
+  }
+}

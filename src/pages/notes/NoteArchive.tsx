@@ -1,3 +1,4 @@
+import { LinearProgress } from '@mui/material';
 import { Container } from '@mui/system';
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -45,6 +46,8 @@ const NoteArchive = () => {
 
   return (
     <div className="page page--note-archive">
+      {isLoading && <LinearProgress />}
+
       <section>
         <Container>
           <h1>All notes</h1>
