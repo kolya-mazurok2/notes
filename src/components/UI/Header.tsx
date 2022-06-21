@@ -1,19 +1,21 @@
-import { Link } from '@mui/material';
+import { Grid } from '@mui/material';
 import { Container } from '@mui/system';
+import MainMenu from './MainMenu';
+import UserMenu from './UserMenu';
 
 const Header = () => {
   return (
     <header className="header header--main">
       <Container>
-        <nav className="main-menu">
-          <Link className="main-menu--item" href="/">
-            Home
-          </Link>
+        <Grid container>
+          <Grid item xs={8}>
+            <MainMenu />
+          </Grid>
 
-          <Link className="main-menu--item" href="/notes">
-            Notes
-          </Link>
-        </nav>
+          <Grid item xs={4}>
+            <UserMenu />
+          </Grid>
+        </Grid>
       </Container>
     </header>
   );
