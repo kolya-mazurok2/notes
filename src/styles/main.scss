@@ -12,7 +12,7 @@
 
 .main-menu {
   padding: 20px 0;
-  
+
   &--item {
     padding: 8px 12px;
   }
@@ -27,6 +27,26 @@
 
     &.featured > div {
       border-top: 4px solid $gold;
+    }
+  }
+}
+
+.user-menu {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.sign-in-form {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.page {
+  &--sign-in {
+    .sign-in-form {
+      padding: 20px 0 0 0;
     }
   }
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import SignIn from '../pages/auth/SignIn';
 import Home from '../pages/Home';
 import NoteArchive from '../pages/notes/NoteArchive';
 import NoteSingle from '../pages/notes/NoteSingle';
@@ -20,6 +21,10 @@ const appRoutes: Array<IAppRoutes> = [
   {
     path: '/notes/:id',
     element: <NoteSingle />
+  },
+  {
+    path: '/sign-in',
+    element: <SignIn />
   }
 ];
 
