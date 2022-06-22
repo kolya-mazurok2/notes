@@ -27,6 +27,7 @@ interface NoteFormFields {
   title: string;
   description: string;
   isFeatured: boolean;
+  isPublic: boolean;
 }
 
 interface NoteFormFieldsValidity {
@@ -36,7 +37,8 @@ interface NoteFormFieldsValidity {
 const DEFAULT_NOTE_FORM_FIELDS: NoteFormFields = {
   title: '',
   description: '',
-  isFeatured: false
+  isFeatured: false,
+  isPublic: false
 };
 
 const NOTE_FORM_FIELDS_VALIDITY_VALID: NoteFormFieldsValidity = {
@@ -99,6 +101,10 @@ const NoteForm = ({ formType, note, onNoteCreate, onNoteEdit }: NoteFormProps) =
     setFormFields({ ...formFields, isFeatured: value });
   };
 
+  const publicChangeHandler = (value: boolean) => {
+    setFormFields({ ...formFields, isPublic: value });
+  };
+
   useEffect(() => {
     if (formType === NoteFormType.Edit && note) {
       setIsEdit(true);
@@ -106,7 +112,8 @@ const NoteForm = ({ formType, note, onNoteCreate, onNoteEdit }: NoteFormProps) =
       setFormFields({
         title: note.title,
         description: note.description,
-        isFeatured: note.isFeatured
+        isFeatured: note.isFeatured,
+        isPublic: note.isPublic
       });
 
       setFormFieldsValidity(NOTE_FORM_FIELDS_VALIDITY_VALID);
@@ -151,6 +158,15 @@ const NoteForm = ({ formType, note, onNoteCreate, onNoteEdit }: NoteFormProps) =
           onChange={(event) => {
             const target = event.target as HTMLInputElement;
             featuredChangeHandler(target.checked);
+          }}
+        />
+
+        <FormControlLabel
+          control={<Checkbox defaultChecked={note && note.isPublic ? true : false} />}
+          label="Public"
+          onChange={(event) => {
+            const target = event.target as HTMLInputElement;
+            publicChangeHandler(target.checked);
           }}
         />
       </FormControl>

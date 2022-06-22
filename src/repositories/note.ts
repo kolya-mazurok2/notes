@@ -6,7 +6,8 @@ import {
   findAllNoteDocs,
   findNoteDoc,
   removeNoteDoc,
-  updateNoteDoc
+  updateNoteDoc,
+  findAllPublicNoteDocs
 } from '../services/firestore/note';
 import { Note, NoteCreate, NOTE_DEFAULT } from '../types/note';
 
@@ -33,6 +34,12 @@ const generateNotesFromDocs = (docs: QuerySnapshot<DocumentData>): Array<Note> =
 
 const findAllNotes = async (authorId: string): Promise<Array<Note>> => {
   const docs = await findAllNoteDocs(authorId);
+
+  return generateNotesFromDocs(docs);
+};
+
+const findAllPublicNotes = async (): Promise<Array<Note>> => {
+  const docs = await findAllPublicNoteDocs();
 
   return generateNotesFromDocs(docs);
 };
@@ -65,4 +72,12 @@ const updateNote = (note: Note) => {
   return updateNoteDoc(note);
 };
 
-export { findAllNotes, findNote, removeNote, createNote, updateNote, findAllFeaturedNotes };
+export {
+  findAllNotes,
+  findNote,
+  removeNote,
+  createNote,
+  updateNote,
+  findAllFeaturedNotes,
+  findAllPublicNotes
+};
