@@ -7,24 +7,29 @@ import NoteSingle from '../pages/notes/NoteSingle';
 interface IAppRoutes {
   path: string;
   element: React.ReactNode;
+  isPrivate: boolean;
 }
 
 const appRoutes: Array<IAppRoutes> = [
   {
     path: '/',
-    element: <Home />
+    element: <Home />,
+    isPrivate: false
   },
   {
     path: '/notes',
-    element: <NoteArchive />
+    element: <NoteArchive />,
+    isPrivate: true
   },
   {
     path: '/notes/:id',
-    element: <NoteSingle />
+    element: <NoteSingle />,
+    isPrivate: true
   },
   {
     path: '/sign-in',
-    element: <SignIn />
+    element: <SignIn />,
+    isPrivate: false
   }
 ];
 

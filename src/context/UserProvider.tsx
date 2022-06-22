@@ -1,5 +1,5 @@
 import { onAuthStateChanged } from 'firebase/auth';
-import { createContext, FC, ReactNode, useState } from 'react';
+import React, { createContext, FC, ReactNode, useState } from 'react';
 import { auth } from '../services/firestore/config';
 
 interface IState {
@@ -18,12 +18,21 @@ interface Props {
 
 const UserProvider: FC<Props> = ({ children }: Props) => {
   const [user, setUser] = useState(INITIAL_STATE.user);
+  const [isLoading, setIsLoading] = useState(true);
 
-  onAuthStateChanged(auth, (user) => {
-    setUser(user);
+  onAuthStateChanged(auth, (currentUser) => {
+    setIsLoading(false);
+
+    if (user !== currentUser) {
+      setUser(currentUser);
+    }
   });
 
-  return <UserContext.Provider value={{ user }}>{children}</UserContext.Provider>;
+  return (
+    <React.Fragment>
+      {!isLoading && <UserContext.Provider value={{ user }}>{children}</UserContext.Provider>}
+    </React.Fragment>
+  );
 };
 
 export default UserProvider;
