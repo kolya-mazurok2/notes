@@ -29,19 +29,11 @@ exports[`should render multiple notes 1`] = `
       <div
         className="MuiCardContent-root css-46bh2p-MuiCardContent-root"
       >
-        <div
-          className="MuiCardHeader-root css-185gdzj-MuiCardHeader-root"
+        <h6
+          className="MuiTypography-root MuiTypography-h6 css-2ulfj5-MuiTypography-root"
         >
-          <div
-            className="MuiCardHeader-content css-1qbkelo-MuiCardHeader-content"
-          >
-            <span
-              className="MuiTypography-root MuiTypography-h5 MuiCardHeader-title css-1qvr50w-MuiTypography-root"
-            >
-              First
-            </span>
-          </div>
-        </div>
+          First
+        </h6>
         <p
           className="MuiTypography-root MuiTypography-body2 css-e784if-MuiTypography-root"
         >
@@ -110,19 +102,11 @@ exports[`should render multiple notes 1`] = `
       <div
         className="MuiCardContent-root css-46bh2p-MuiCardContent-root"
       >
-        <div
-          className="MuiCardHeader-root css-185gdzj-MuiCardHeader-root"
+        <h6
+          className="MuiTypography-root MuiTypography-h6 css-2ulfj5-MuiTypography-root"
         >
-          <div
-            className="MuiCardHeader-content css-1qbkelo-MuiCardHeader-content"
-          >
-            <span
-              className="MuiTypography-root MuiTypography-h5 MuiCardHeader-title css-1qvr50w-MuiTypography-root"
-            >
-              Second
-            </span>
-          </div>
-        </div>
+          Second
+        </h6>
         <h6
           className="MuiTypography-root MuiTypography-subtitle2 MuiTypography-alignRight css-h2l1uj-MuiTypography-root"
         >
