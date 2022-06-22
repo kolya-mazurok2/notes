@@ -31,14 +31,14 @@ const generateNotesFromDocs = (docs: QuerySnapshot<DocumentData>): Array<Note> =
   return notes;
 };
 
-const findAllNotes = async (): Promise<Array<Note>> => {
-  const docs = await findAllNoteDocs();
+const findAllNotes = async (authorId: string): Promise<Array<Note>> => {
+  const docs = await findAllNoteDocs(authorId);
 
   return generateNotesFromDocs(docs);
 };
 
-const findAllFeaturedNotes = async (): Promise<Array<Note>> => {
-  const docs = await findAllFeaturedNoteDocs();
+const findAllFeaturedNotes = async (authorId: string): Promise<Array<Note>> => {
+  const docs = await findAllFeaturedNoteDocs(authorId);
 
   return generateNotesFromDocs(docs);
 };

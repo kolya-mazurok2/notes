@@ -1,9 +1,9 @@
-import { onAuthStateChanged } from 'firebase/auth';
+import { onAuthStateChanged, User } from 'firebase/auth';
 import React, { createContext, FC, ReactNode, useState } from 'react';
 import { auth } from '../services/firestore/config';
 
 interface IState {
-  user: Object | null;
+  user: User | null;
 }
 
 const INITIAL_STATE: IState = {
