@@ -5,6 +5,7 @@ import {
   doc,
   getDoc,
   getDocs,
+  limit,
   orderBy,
   query,
   updateDoc,
@@ -21,6 +22,12 @@ const findAllNoteDocs = (authorId: string) => {
   return getDocs(query(ref, where('authorId', '==', authorId), orderBy('createdAt', 'desc')));
 };
 
+const findAllPublicNoteDocs = () => {
+  const ref = collection(db, PATH);
+
+  return getDocs(query(ref, where('isPublic', '==', true), orderBy('createdAt', 'desc'), limit(6)));
+};
+
 const findAllFeaturedNoteDocs = (authorId: string) => {
   const ref = collection(db, PATH);
 
@@ -29,7 +36,8 @@ const findAllFeaturedNoteDocs = (authorId: string) => {
       ref,
       where('authorId', '==', authorId),
       where('isFeatured', '==', true),
-      orderBy('createdAt', 'desc')
+      orderBy('createdAt', 'desc'),
+      limit(6)
     )
   );
 };
@@ -64,5 +72,6 @@ export {
   removeNoteDoc,
   createNoteDoc,
   updateNoteDoc,
-  findAllFeaturedNoteDocs
+  findAllFeaturedNoteDocs,
+  findAllPublicNoteDocs
 };
