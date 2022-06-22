@@ -7,7 +7,8 @@ import {
   Typography
 } from '@mui/material';
 import { Box } from '@mui/system';
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useContext, useEffect, useState } from 'react';
+import { UserContext } from '../../context/UserProvider';
 import { Note, NoteCreate } from '../../types/note';
 
 enum NoteFormType {
@@ -47,6 +48,8 @@ const NOTE_FORM_FIELDS_VALIDITY_INVALID: NoteFormFieldsValidity = {
 };
 
 const NoteForm = ({ formType, note, onNoteCreate, onNoteEdit }: NoteFormProps) => {
+  const { user } = useContext(UserContext);
+
   const [isEdit, setIsEdit] = useState(false);
 
   const [formFields, setFormFields] = useState<NoteFormFields>(DEFAULT_NOTE_FORM_FIELDS);
@@ -72,6 +75,7 @@ const NoteForm = ({ formType, note, onNoteCreate, onNoteEdit }: NoteFormProps) =
       if (onNoteCreate) {
         onNoteCreate({
           ...formFields,
+          authorId: user ? user.uid : '',
           createdAt: new Date()
         });
       }

@@ -15,16 +15,23 @@ import { db } from './config';
 
 const PATH = 'notes';
 
-const findAllNoteDocs = () => {
+const findAllNoteDocs = (authorId: string) => {
   const ref = collection(db, PATH);
 
-  return getDocs(query(ref, orderBy('createdAt', 'desc')));
+  return getDocs(query(ref, where('authorId', '==', authorId), orderBy('createdAt', 'desc')));
 };
 
-const findAllFeaturedNoteDocs = () => {
+const findAllFeaturedNoteDocs = (authorId: string) => {
   const ref = collection(db, PATH);
 
-  return getDocs(query(ref, where('isFeatured', '==', true), orderBy('createdAt', 'desc')));
+  return getDocs(
+    query(
+      ref,
+      where('authorId', '==', authorId),
+      where('isFeatured', '==', true),
+      orderBy('createdAt', 'desc')
+    )
+  );
 };
 
 const findNoteDoc = (id: string) => {
