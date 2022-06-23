@@ -35,6 +35,7 @@ const NoteForm = ({ formType, note, onNoteCreate, onNoteEdit }: NoteFormProps) =
     isTouched: titleIsTouched,
     isValid: titleIsValid,
     setEnteredValue: setTitle,
+    setIsValid: setIsTitleValid,
     handleChange: titleChangeHandler,
     handleBlur: titleBlurHandler,
     reset: resetTitle
@@ -104,7 +105,7 @@ const NoteForm = ({ formType, note, onNoteCreate, onNoteEdit }: NoteFormProps) =
   const formSubmitHandler = (event: FormEvent) => {
     event.preventDefault();
 
-    if (!titleIsValid) {
+    if (titleHasError) {
       return;
     }
 
@@ -116,6 +117,7 @@ const NoteForm = ({ formType, note, onNoteCreate, onNoteEdit }: NoteFormProps) =
       setIsEdit(true);
 
       setTitle(note.title);
+      setIsTitleValid(true);
       setDescription(note.description);
       setIsFeatured(note.isFeatured);
       setIsPublic(note.isPublic);

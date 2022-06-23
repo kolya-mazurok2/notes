@@ -16,7 +16,7 @@ const SignIn = () => {
       await signIn(email, password);
       navigate('/');
     } catch (error: any) {
-      dispatch(openToaster(getAuthErrorMessage(error.code)));
+      dispatch(openToaster({ message: getAuthErrorMessage(error.code), severity: 'error' }));
     }
 
     return errorCode;

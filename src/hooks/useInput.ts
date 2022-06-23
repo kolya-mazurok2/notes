@@ -30,6 +30,7 @@ const useInput = (
     isTouched,
     isValid,
     setEnteredValue,
+    setIsValid,
     handleChange,
     handleBlur,
     reset
