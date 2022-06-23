@@ -7,7 +7,7 @@ import {
   Typography
 } from '@mui/material';
 import { Box } from '@mui/system';
-import { FormEvent, useContext, useEffect, useRef, useState } from 'react';
+import { FormEvent, useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../context/UserProvider';
 import useCheckbox from '../../hooks/useCheckbox';
 import useInput from '../../hooks/useInput';
@@ -30,7 +30,6 @@ const NoteForm = ({ formType, note, onNoteCreate, onNoteEdit }: NoteFormProps) =
 
   const [isEdit, setIsEdit] = useState(false);
 
-  const titleRef = useRef(null);
   const {
     enteredValue: title,
     isTouched: titleIsTouched,
@@ -39,18 +38,17 @@ const NoteForm = ({ formType, note, onNoteCreate, onNoteEdit }: NoteFormProps) =
     handleChange: titleChangeHandler,
     handleBlur: titleBlurHandler,
     reset: resetTitle
-  } = useInput(titleRef, (value) => {
+  } = useInput((value) => {
     return value.length > 1;
   });
   const titleHasError = !titleIsValid && titleIsTouched;
 
-  const descriptionRef = useRef(null);
   const {
     enteredValue: description,
     setEnteredValue: setDescription,
     handleChange: descriptionChangeHandler,
     reset: resetDescription
-  } = useInput(descriptionRef);
+  } = useInput();
 
   const {
     enteredValue: isFeatured,
@@ -130,7 +128,6 @@ const NoteForm = ({ formType, note, onNoteCreate, onNoteEdit }: NoteFormProps) =
 
       <FormControl fullWidth margin="normal">
         <TextField
-          ref={titleRef}
           id="title"
           label="Title"
           variant="outlined"
@@ -145,7 +142,6 @@ const NoteForm = ({ formType, note, onNoteCreate, onNoteEdit }: NoteFormProps) =
 
       <FormControl fullWidth margin="normal">
         <TextField
-          ref={descriptionRef}
           id="description"
           label="Description"
           multiline

@@ -1,6 +1,6 @@
 import { Button, FormControl, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import { FormEvent, useRef, useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { isEmail } from '../../helpers/validation';
 import useInput from '../../hooks/useInput';
 
@@ -11,21 +11,19 @@ interface Props {
 const SignInForm = ({ onSubmit }: Props) => {
   const [isSubmiting, setIsSubmiting] = useState(false);
 
-  const emailInput = useRef<HTMLDivElement | null>(null);
   const {
     enteredValue: email,
     isTouched: isEmailInputTouched,
     isValid: isEmailValid,
     handleChange: handleEmailChange,
     handleBlur: handleEmailBlur
-  } = useInput(emailInput, (value) => {
+  } = useInput((value) => {
     return isEmail(value);
   });
 
   const emailInputHasError = isEmailInputTouched && !isEmailValid;
 
-  const passwordInput = useRef<HTMLDivElement | null>(null);
-  const { enteredValue: password, handleChange: handlePasswordChange } = useInput(passwordInput);
+  const { enteredValue: password, handleChange: handlePasswordChange } = useInput();
 
   const formSubmitHandler = (event: FormEvent) => {
     event.preventDefault();
@@ -45,7 +43,6 @@ const SignInForm = ({ onSubmit }: Props) => {
 
       <FormControl fullWidth margin="normal">
         <TextField
-          ref={emailInput}
           id="email"
           type="email"
           label="Email"
