@@ -1,28 +1,28 @@
 import { Grid, Typography } from '@mui/material';
+import { Note } from '../../types/note';
 import NoteListItem from './NoteListItem';
-import * as NOTES_API from '../../api/notes';
-import { useEffect, useState } from 'react';
-import { Note, NoteListProps } from '../../types/note';
 
-const NoteList = (props: NoteListProps) => {
-  const [notes, setNotes] = useState<Note[]>(props.notes);
+interface NoteListProps {
+  notes: Array<Note>;
+  onNoteEdit?: (id: string) => void;
+  onNoteDelete?: (id: string) => void;
+}
 
-  const deleteNote = (id: string) => {
-    NOTES_API.remove(id).then(() => {
-      setNotes(
-        notes.filter((note) => {
-          return note.id !== id;
-        })
-      );
-    });
+const NoteList = ({ notes, onNoteEdit, onNoteDelete }: NoteListProps) => {
+  const handleNoteItemEdit = (id: string) => {
+    if (onNoteEdit) {
+      onNoteEdit(id);
+    }
   };
 
-  useEffect(() => {
-    setNotes(props.notes);
-  }, [props.notes]);
+  const handleNoteItemDelete = (id: string) => {
+    if (onNoteDelete) {
+      onNoteDelete(id);
+    }
+  };
 
   return (
-    <Grid container spacing={3}>
+    <Grid container spacing={3} className="note-list">
       {!notes.length && (
         <Grid item xs={12}>
           <Typography variant="h6">No notes have been added yet!</Typography>
@@ -31,8 +31,22 @@ const NoteList = (props: NoteListProps) => {
 
       {notes.map((note) => {
         return (
-          <Grid key={note.id} item xs={4}>
-            <NoteListItem note={note} itemDeleteCallback={deleteNote} />
+          <Grid
+            key={note.id}
+            item
+            xs={12}
+            sm={6}
+            md={4}
+            className={`note-list--item${note.isFeatured ? ' featured' : ''}`}>
+            {onNoteEdit && onNoteDelete ? (
+              <NoteListItem
+                note={note}
+                onNoteItemEdit={handleNoteItemEdit}
+                onNoteItemDelete={handleNoteItemDelete}
+              />
+            ) : (
+              <NoteListItem note={note} />
+            )}
           </Grid>
         );
       })}

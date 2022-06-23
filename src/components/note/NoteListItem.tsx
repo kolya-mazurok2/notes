@@ -1,34 +1,46 @@
-import { Card, CardContent, CardHeader, Typography, CardActions, Button } from '@mui/material';
-import { NoteListItemProps } from '../../types/note';
-import { NOTES as NOUTES_ROUTE } from '../../constants/routes';
+import { Card, CardContent, Typography, CardActions, Button } from '@mui/material';
+import { dateFormatDefault } from '../../helpers/date';
+import { Note } from '../../types/note';
 
-const NoteListItem = (props: NoteListItemProps) => {
-  const { note, itemDeleteCallback } = props;
+interface INoteListItemProps {
+  note: Note;
+  onNoteItemEdit?: (id: string) => void;
+  onNoteItemDelete?: (id: string) => void;
+}
 
-  const deleteClickHandler = () => {
-    itemDeleteCallback(note.id);
-  };
-
+const NoteListItem = ({ note, onNoteItemEdit, onNoteItemDelete }: INoteListItemProps) => {
   return (
     <Card variant="outlined">
       <CardContent>
-        <CardHeader title={note.title} />
+        <Typography variant="h6">{note.title}</Typography>
 
         {note.description && <Typography variant="body2">{note.description}</Typography>}
 
         <Typography variant="subtitle2" align="right">
-          {note.createdAt.toLocaleDateString()}
+          {dateFormatDefault(note.createdAt)}
         </Typography>
 
-        <CardActions>
-          <Button size="small" color="primary" href={NOUTES_ROUTE + `/${note.id}`}>
-            Edit
-          </Button>
+        {onNoteItemEdit && onNoteItemDelete && (
+          <CardActions>
+            <Button
+              size="small"
+              color="primary"
+              onClick={() => {
+                onNoteItemEdit(note.id);
+              }}>
+              Edit
+            </Button>
 
-          <Button size="small" color="error" onClick={deleteClickHandler}>
-            Delete
-          </Button>
-        </CardActions>
+            <Button
+              size="small"
+              color="error"
+              onClick={() => {
+                onNoteItemDelete(note.id);
+              }}>
+              Delete
+            </Button>
+          </CardActions>
+        )}
       </CardContent>
     </Card>
   );

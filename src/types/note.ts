@@ -2,28 +2,26 @@ export interface Note {
   id: string;
   title: string;
   description: string;
+  authorId: string;
+  isFeatured: boolean;
+  isPublic: boolean;
   createdAt: Date;
 }
 
 export interface NoteCreate {
   title: string;
   description: string;
+  authorId: string;
+  isPublic: boolean;
   createdAt: Date;
 }
 
-export interface NoteListProps {
-  notes: Array<Note>;
-}
-
-export interface NoteListItemProps {
-  note: Note;
-  itemDeleteCallback(id: string): void;
-}
-
-export interface NoteEditFormProps {
-  note: Note;
-}
-
-export interface NoteCreateFormProps {
-  noteCreatedCallback(): void;
-}
+export const NOTE_DEFAULT: Note = {
+  id: 'a1',
+  title: 'Title',
+  description: '',
+  authorId: '',
+  isFeatured: false,
+  isPublic: false,
+  createdAt: new Date()
+};
