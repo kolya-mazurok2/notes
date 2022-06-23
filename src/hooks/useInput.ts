@@ -1,8 +1,6 @@
-import React from 'react';
 import { useState } from 'react';
 
 const useInput = (
-  input: React.MutableRefObject<HTMLDivElement | null>,
   validate: (value: string) => boolean = () => {
     return true;
   }
