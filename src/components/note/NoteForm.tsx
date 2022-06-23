@@ -7,8 +7,10 @@ import {
   Typography
 } from '@mui/material';
 import { Box } from '@mui/system';
-import { FormEvent, useContext, useEffect, useState } from 'react';
+import { FormEvent, useContext, useEffect, useRef, useState } from 'react';
 import { UserContext } from '../../context/UserProvider';
+import useCheckbox from '../../hooks/useCheckbox';
+import useInput from '../../hooks/useInput';
 import { Note, NoteCreate } from '../../types/note';
 
 enum NoteFormType {
@@ -23,100 +25,102 @@ interface NoteFormProps {
   onNoteEdit?: (note: Note) => void;
 }
 
-interface NoteFormFields {
-  title: string;
-  description: string;
-  isFeatured: boolean;
-  isPublic: boolean;
-}
-
-interface NoteFormFieldsValidity {
-  isTitleValid: boolean;
-}
-
-const DEFAULT_NOTE_FORM_FIELDS: NoteFormFields = {
-  title: '',
-  description: '',
-  isFeatured: false,
-  isPublic: false
-};
-
-const NOTE_FORM_FIELDS_VALIDITY_VALID: NoteFormFieldsValidity = {
-  isTitleValid: true
-};
-
-const NOTE_FORM_FIELDS_VALIDITY_INVALID: NoteFormFieldsValidity = {
-  isTitleValid: false
-};
-
 const NoteForm = ({ formType, note, onNoteCreate, onNoteEdit }: NoteFormProps) => {
   const { user } = useContext(UserContext);
 
   const [isEdit, setIsEdit] = useState(false);
 
-  const [formFields, setFormFields] = useState<NoteFormFields>(DEFAULT_NOTE_FORM_FIELDS);
-  const [formFieldsValidity, setFormFieldsValidity] = useState<NoteFormFieldsValidity>(
-    NOTE_FORM_FIELDS_VALIDITY_INVALID
-  );
+  const titleRef = useRef(null);
+  const {
+    enteredValue: title,
+    isTouched: titleIsTouched,
+    isValid: titleIsValid,
+    setEnteredValue: setTitle,
+    handleChange: titleChangeHandler,
+    handleBlur: titleBlurHandler,
+    reset: resetTitle
+  } = useInput(titleRef, (value) => {
+    return value.length > 1;
+  });
+  const titleHasError = !titleIsValid && titleIsTouched;
+
+  const descriptionRef = useRef(null);
+  const {
+    enteredValue: description,
+    setEnteredValue: setDescription,
+    handleChange: descriptionChangeHandler,
+    reset: resetDescription
+  } = useInput(descriptionRef);
+
+  const {
+    enteredValue: isFeatured,
+    setEnteredValue: setIsFeatured,
+    handleChange: isFeaturedChangeHandler,
+    reset: resetIsFeatured
+  } = useCheckbox();
+
+  const {
+    enteredValue: isPublic,
+    setEnteredValue: setIsPublic,
+    handleChange: isPublicChangeHandler,
+    reset: resetIsPublic
+  } = useCheckbox();
+
+  const getFormFields = () => {
+    return {
+      title: title,
+      description: description,
+      isFeatured: isFeatured,
+      isPublic: isPublic
+    };
+  };
+
+  const submitEdit = () => {
+    if (!note || !onNoteEdit) {
+      return;
+    }
+
+    onNoteEdit({
+      ...note,
+      ...getFormFields()
+    });
+  };
+
+  const submitCreate = () => {
+    if (!onNoteCreate) {
+      return;
+    }
+
+    onNoteCreate({
+      ...getFormFields(),
+      authorId: user ? user.uid : '',
+      createdAt: new Date()
+    });
+
+    resetTitle();
+    resetDescription();
+    resetIsFeatured();
+    resetIsPublic();
+  };
 
   const formSubmitHandler = (event: FormEvent) => {
     event.preventDefault();
 
-    if (!formFieldsValidity.isTitleValid) {
+    if (!titleIsValid) {
       return;
     }
 
-    if (isEdit) {
-      if (note && onNoteEdit) {
-        onNoteEdit({
-          ...note,
-          ...formFields
-        });
-      }
-    } else {
-      if (onNoteCreate) {
-        onNoteCreate({
-          ...formFields,
-          authorId: user ? user.uid : '',
-          createdAt: new Date()
-        });
-      }
-    }
-  };
-
-  const titleChangeHandler = (value: string) => {
-    setFormFields({ ...formFields, title: value });
-
-    setFormFieldsValidity({
-      ...formFieldsValidity,
-      isTitleValid: Boolean(value.length)
-    });
-  };
-
-  const descriptionChangeHandler = (value: string) => {
-    setFormFields({ ...formFields, description: value });
-  };
-
-  const featuredChangeHandler = (value: boolean) => {
-    setFormFields({ ...formFields, isFeatured: value });
-  };
-
-  const publicChangeHandler = (value: boolean) => {
-    setFormFields({ ...formFields, isPublic: value });
+    isEdit ? submitEdit() : submitCreate();
   };
 
   useEffect(() => {
     if (formType === NoteFormType.Edit && note) {
       setIsEdit(true);
 
-      setFormFields({
-        title: note.title,
-        description: note.description,
-        isFeatured: note.isFeatured,
-        isPublic: note.isPublic
-      });
-
-      setFormFieldsValidity(NOTE_FORM_FIELDS_VALIDITY_VALID);
+      setTitle(note.title);
+      setDescription(note.description);
+      setIsFeatured(note.isFeatured);
+      setIsPublic(note.isPublic);
     }
   }, []);
 
@@ -126,25 +130,28 @@ const NoteForm = ({ formType, note, onNoteCreate, onNoteEdit }: NoteFormProps) =
 
       <FormControl fullWidth margin="normal">
         <TextField
+          ref={titleRef}
           id="title"
           label="Title"
           variant="outlined"
-          value={formFields.title}
+          value={title}
           onChange={(event) => {
             titleChangeHandler(event.currentTarget.value);
           }}
-          error={!formFieldsValidity.isTitleValid}
+          onBlur={titleBlurHandler}
+          error={titleHasError}
         />
       </FormControl>
 
       <FormControl fullWidth margin="normal">
         <TextField
+          ref={descriptionRef}
           id="description"
           label="Description"
           multiline
           rows={6}
           variant="outlined"
-          value={formFields.description}
+          value={description}
           onChange={(event) => {
             descriptionChangeHandler(event.currentTarget.value);
           }}
@@ -153,20 +160,20 @@ const NoteForm = ({ formType, note, onNoteCreate, onNoteEdit }: NoteFormProps) =
 
       <FormControl margin="normal">
         <FormControlLabel
-          control={<Checkbox defaultChecked={note && note.isFeatured ? true : false} />}
+          control={<Checkbox checked={isFeatured} />}
           label="Featured"
           onChange={(event) => {
             const target = event.target as HTMLInputElement;
-            featuredChangeHandler(target.checked);
+            isFeaturedChangeHandler(target.checked);
           }}
         />
 
         <FormControlLabel
-          control={<Checkbox defaultChecked={note && note.isPublic ? true : false} />}
+          control={<Checkbox checked={isPublic} />}
           label="Public"
           onChange={(event) => {
             const target = event.target as HTMLInputElement;
-            publicChangeHandler(target.checked);
+            isPublicChangeHandler(target.checked);
           }}
         />
       </FormControl>
