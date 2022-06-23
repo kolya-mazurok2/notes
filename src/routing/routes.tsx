@@ -1,5 +1,6 @@
 import React from 'react';
 import SignIn from '../pages/auth/SignIn';
+import SignUp from '../pages/auth/SignUp';
 import Home from '../pages/Home';
 import NoteArchive from '../pages/notes/NoteArchive';
 import NoteSingle from '../pages/notes/NoteSingle';
@@ -29,6 +30,11 @@ const appRoutes: Array<IAppRoutes> = [
   {
     path: '/sign-in',
     element: <SignIn />,
+    isPrivate: false
+  },
+  {
+    path: '/sign-up',
+    element: <SignUp />,
     isPrivate: false
   }
 ];

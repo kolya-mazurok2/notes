@@ -1,14 +1,14 @@
-import { Button, FormControl, Link, TextField, Typography } from '@mui/material';
+import { Button, FormControl, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { FormEvent, useState } from 'react';
-import { isEmail } from '../../helpers/validation';
+import { isEmail, isPassword } from '../../helpers/validation';
 import useInput from '../../hooks/useInput';
 
 interface Props {
   onSubmit: (email: string, password: string) => Promise<string>;
 }
 
-const SignInForm = ({ onSubmit }: Props) => {
+const SignUpForm = ({ onSubmit }: Props) => {
   const [isSubmiting, setIsSubmiting] = useState(false);
 
   const {
@@ -23,7 +23,28 @@ const SignInForm = ({ onSubmit }: Props) => {
 
   const emailInputHasError = isEmailInputTouched && !isEmailValid;
 
-  const { enteredValue: password, handleChange: handlePasswordChange } = useInput();
+  const {
+    enteredValue: password,
+    isTouched: isPasswordTouched,
+    isValid: isPasswordValid,
+    handleChange: handlePasswordChange,
+    handleBlur: handlePasswordBlur
+  } = useInput((value) => {
+    return isPassword(value);
+  });
+
+  const passwordHasError = isPasswordTouched && !isPasswordValid;
+
+  const {
+    isTouched: isRepeatPasswordToucher,
+    isValid: isRepeatPasswordValid,
+    handleChange: handleRepeatPasswordChange,
+    handleBlur: handleRepeatPasswordBlur
+  } = useInput((value) => {
+    return value === password;
+  });
+
+  const repeatPasswordHasError = isRepeatPasswordToucher && !isRepeatPasswordValid;
 
   const formSubmitHandler = (event: FormEvent) => {
     event.preventDefault();
@@ -66,6 +87,22 @@ const SignInForm = ({ onSubmit }: Props) => {
           onChange={(event) => {
             handlePasswordChange(event.currentTarget.value);
           }}
+          onBlur={handlePasswordBlur}
+          error={passwordHasError}
+        />
+      </FormControl>
+
+      <FormControl fullWidth margin="normal">
+        <TextField
+          id="repeat-password"
+          type="password"
+          label="Repeat password"
+          variant="outlined"
+          onChange={(event) => {
+            handleRepeatPasswordChange(event.currentTarget.value);
+          }}
+          onBlur={handleRepeatPasswordBlur}
+          error={repeatPasswordHasError}
         />
       </FormControl>
 
@@ -74,14 +111,8 @@ const SignInForm = ({ onSubmit }: Props) => {
           Submit
         </Button>
       </FormControl>
-
-      <FormControl fullWidth margin="normal">
-        <Link href="/sign-up" textAlign="center">
-          Don&apos;t have an account? Sign up!
-        </Link>
-      </FormControl>
     </Box>
   );
 };
 
-export default SignInForm;
+export default SignUpForm;
