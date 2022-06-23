@@ -31,6 +31,7 @@ const useInput = (
     enteredValue,
     isTouched,
     isValid,
+    setEnteredValue,
     handleChange,
     handleBlur,
     reset
